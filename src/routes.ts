@@ -8,6 +8,10 @@ import {
 
 export const routes = express.Router();
 
+routes.get("/", (req, res) => {
+    res.render("index");
+});
+
 routes.get("/user", indexUser);
 routes.post("/user", createUser);
 routes.put("/user/:id", updateUser);

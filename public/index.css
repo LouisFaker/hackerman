@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-blue-1: #081b39;
+    --color-blue-2: #3c93cf;
+    --color-blue-3: #3e5162;
+
+    --color-white-1: #f5fafc;
+    --color-black: #2b2b2b;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    height: 100%;
+}
+html {
+    height: 100%;
+}
+.bg-body-tertiary {
+    background-color: var(--bs-secondary-bg-subtle) !important;
+}
+.mb-3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px !important;
+}
+.form-login {
+    max-width: 330px;
+    padding: 1rem;
+    border: 2px solid black;
+    background-color: white;
+    padding-top: 40px;
+    padding-bottom: 30px;
+    border-radius: 10px;
+}
+
+.form-login .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-login input[type="email"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.form-login input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.main-singin {
+    height: 100vh;
+}
+.main-singin-logo {
+    width: 100%;
+    text-align: center;
+}
+.main-singin-create-account {
+    text-align: center;
+}
