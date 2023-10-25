@@ -110,7 +110,7 @@ async function deleteUser(req: Request, res: Response) {
             });
         } else {
             res.status(404).json({
-                message: `usuario com ID ${id} não encontrada.`,
+                message: `usuario com ID ${id} não encontrado.`,
             });
         }
     } catch (error) {
