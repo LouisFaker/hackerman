@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import iniciarConexao from "../database/database";
 import { ResultSetHeader } from "mysql2";
-import bcrypt from 'bcryptjs'
+import bcrypt from "bcryptjs";
 
 async function indexUser(req: Request, res: Response) {
     try {
@@ -23,17 +23,12 @@ async function createUser(req: Request, res: Response) {
                 .json({ message: "Todos os campos são obrigatórios." });
         }
 
-        const encryptedPassword = await bcrypt.hash(senha, 8)
+        const encryptedPassword = await bcrypt.hash(senha, 8);
 
         const connection = await iniciarConexao;
         await connection.execute(
             "INSERT INTO usuarios (email, senha, nome, categoria) VALUES (?, ?, ?, ?)",
-            [
-                email,
-                encryptedPassword,
-                nome,
-                categoria
-            ]
+            [email, encryptedPassword, nome, categoria]
         );
 
         res.status(201).json({ message: "usuario criada com sucesso." });
@@ -45,14 +40,7 @@ async function createUser(req: Request, res: Response) {
 async function updateUser(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const {
-            nomeCliente,
-            enderecoEntrega,
-            status,
-            metodoPagamento,
-            total,
-            notasAdicionais,
-        } = req.body;
+        const { email, senha, nome, categoria } = req.body;
 
         const connection = await iniciarConexao;
 
@@ -72,12 +60,12 @@ async function updateUser(req: Request, res: Response) {
 
         const fieldsToUpdate: { [key: string]: unknown } = {};
 
-        if (nomeCliente) fieldsToUpdate.nomeCliente = nomeCliente;
-        if (enderecoEntrega) fieldsToUpdate.enderecoEntrega = enderecoEntrega;
-        if (status) fieldsToUpdate.status = status;
-        if (metodoPagamento) fieldsToUpdate.metodoPagamento = metodoPagamento;
-        if (total) fieldsToUpdate.total = total;
-        if (notasAdicionais) fieldsToUpdate.notasAdicionais = notasAdicionais;
+        const encryptedPassword = await bcrypt.hash(senha, 8);
+
+        if (email) fieldsToUpdate.email = email;
+        if (encryptedPassword) fieldsToUpdate.senha = encryptedPassword;
+        if (nome) fieldsToUpdate.nome = nome;
+        if (categoria) fieldsToUpdate.categoria = categoria;
 
         if (Object.keys(fieldsToUpdate).length === 0) {
             return res.status(400).json({
