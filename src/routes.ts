@@ -12,6 +12,9 @@ export const routes = express.Router();
 routes.get("/", (req, res) => {
     res.render("index");
 });
+routes.get("/home", (req, res) => {
+    res.render("home");
+});
 
 routes.get("/user", indexUser);
 routes.post("/user", createUser);
