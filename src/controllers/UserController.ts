@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import iniciarConexao from "../database/database";
 import { ResultSetHeader } from "mysql2";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 async function indexUser(req: Request, res: Response) {
     try {
@@ -118,4 +119,65 @@ async function deleteUser(req: Request, res: Response) {
     }
 }
 
-export { indexUser, createUser, updateUser, deleteUser };
+async function loginUser(req: Request, res: Response) {
+    const { nome, senha, hasConnect } = req.body;
+
+    interface IUser {
+        id: number;
+        email: string;
+        senha: string;
+        nome: string;
+        categoria: string;
+    }
+
+    if (!nome || !senha) {
+        return res.status(400).json({ error: "data is missing" });
+    }
+
+    async function stepLogin(user: IUser) {
+        if (!(await bcrypt.compare(senha, user.senha))) {
+            return res.status(400).json({ error: "wrong name or password" });
+        }
+        stepTwo(user);
+    }
+
+    function stepTwo(user: IUser) {
+        let dateTokenExpires: string | number;
+
+        if (hasConnect) {
+            dateTokenExpires = "2d";
+        } else {
+            dateTokenExpires = 600;
+        }
+
+        const token = jwt.sign({ id: user.id }, `${process.env.SECRET}`, {
+            expiresIn: dateTokenExpires,
+        });
+
+        return res.status(200).json({
+            error: false,
+            message: "Login realizado com sucesso!",
+            token: `Bearer ${token}`,
+        });
+    }
+
+    try {
+        const connection = await iniciarConexao;
+        const [rows] = await connection.execute(
+            "SELECT * FROM usuarios WHERE nome = ?",
+            [nome]
+        );
+
+        if (Array.isArray(rows) && rows.length < 1) {
+            return res.status(400).json({ error: "wrong name or password" });
+        }
+
+        if (Array.isArray(rows) && rows.length > 0) {
+            stepLogin(rows[0] as IUser);
+        }
+    } catch (err) {
+        return res.status(500).json({ error: err });
+    }
+}
+
+export { indexUser, createUser, updateUser, deleteUser, loginUser };

@@ -3,6 +3,7 @@ import {
     createUser,
     deleteUser,
     indexUser,
+    loginUser,
     updateUser,
 } from "./controllers/UserController";
 
@@ -14,5 +15,6 @@ routes.get("/", (req, res) => {
 
 routes.get("/user", indexUser);
 routes.post("/user", createUser);
+routes.post("/login", loginUser);
 routes.put("/user/:id", updateUser);
 routes.delete("/user/:id", deleteUser);
