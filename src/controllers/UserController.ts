@@ -143,15 +143,22 @@ async function loginUser(req: Request, res: Response) {
 
     function stepTwo(user: IUser) {
         let dateTokenExpires: string | number;
+        let dateCookieExpires: number;
 
         if (hasConnect) {
             dateTokenExpires = "2d";
+            dateCookieExpires = 172800000;
         } else {
             dateTokenExpires = 600;
+            dateCookieExpires = 600000;
         }
 
         const token = jwt.sign({ id: user.id }, `${process.env.SECRET}`, {
             expiresIn: dateTokenExpires,
+        });
+
+        res.cookie("token", `Bearer ${token}`, {
+            maxAge: dateCookieExpires,
         });
 
         return res.status(200).json({

@@ -6,13 +6,14 @@ import {
     loginUser,
     updateUser,
 } from "./controllers/UserController";
+import { eAuth } from "./middlewares/auth";
 
 export const routes = express.Router();
 
 routes.get("/", (req, res) => {
     res.render("index");
 });
-routes.get("/home", (req, res) => {
+routes.get("/home", eAuth, (req, res) => {
     res.render("home");
 });
 
