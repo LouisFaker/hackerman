@@ -46,12 +46,4 @@ form.addEventListener("submit", async (e) => {
             mensagemErro.style.display = "block";
             mensagemErro.textContent = "Erro ao fazer login";
         });
-
-    mensagemErro.style.display = "none";
-    console.log(
-        "Enviado!",
-        emailInput.value,
-        senhaInput.value,
-        rememberMe.checked
-    );
 });
