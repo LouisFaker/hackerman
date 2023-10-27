@@ -120,7 +120,7 @@ async function deleteUser(req: Request, res: Response) {
 }
 
 async function loginUser(req: Request, res: Response) {
-    const { nome, senha, hasConnect } = req.body;
+    const { email, senha, hasConnect } = req.body;
 
     interface IUser {
         id: number;
@@ -130,13 +130,13 @@ async function loginUser(req: Request, res: Response) {
         categoria: string;
     }
 
-    if (!nome || !senha) {
+    if (!email || !senha) {
         return res.status(400).json({ error: "data is missing" });
     }
 
     async function stepLogin(user: IUser) {
         if (!(await bcrypt.compare(senha, user.senha))) {
-            return res.status(400).json({ error: "wrong name or password" });
+            return res.status(400).json({ error: "Email ou senha incorretos" });
         }
         stepTwo(user);
     }
@@ -171,12 +171,12 @@ async function loginUser(req: Request, res: Response) {
     try {
         const connection = await iniciarConexao;
         const [rows] = await connection.execute(
-            "SELECT * FROM usuarios WHERE nome = ?",
-            [nome]
+            "SELECT * FROM usuarios WHERE email = ?",
+            [email]
         );
 
         if (Array.isArray(rows) && rows.length < 1) {
-            return res.status(400).json({ error: "wrong name or password" });
+            return res.status(400).json({ error: "Email ou senha incorretos" });
         }
 
         if (Array.isArray(rows) && rows.length > 0) {
