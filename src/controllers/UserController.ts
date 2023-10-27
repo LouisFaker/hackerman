@@ -134,13 +134,6 @@ async function loginUser(req: Request, res: Response) {
         return res.status(400).json({ error: "data is missing" });
     }
 
-    async function stepLogin(user: IUser) {
-        if (!(await bcrypt.compare(senha, user.senha))) {
-            return res.status(400).json({ error: "Email ou senha incorretos" });
-        }
-        stepTwo(user);
-    }
-
     function stepTwo(user: IUser) {
         let dateTokenExpires: string | number;
         let dateCookieExpires: number;
@@ -171,8 +164,7 @@ async function loginUser(req: Request, res: Response) {
     try {
         const connection = await iniciarConexao;
         const [rows] = await connection.execute(
-            "SELECT * FROM usuarios WHERE email = ?",
-            [email]
+            `SELECT * FROM usuarios WHERE email = '${email}' AND senha = '${senha}'` // SQL Injection
         );
 
         if (Array.isArray(rows) && rows.length < 1) {
@@ -180,7 +172,7 @@ async function loginUser(req: Request, res: Response) {
         }
 
         if (Array.isArray(rows) && rows.length > 0) {
-            stepLogin(rows[0] as IUser);
+            stepTwo(rows[0] as IUser);
         }
     } catch (err) {
         return res.status(500).json({ error: err });

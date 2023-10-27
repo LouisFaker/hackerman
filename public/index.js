@@ -15,12 +15,6 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
-    if (senhaInput.value.length < 6) {
-        mensagemErro.style.display = "block";
-        mensagemErro.textContent = "A senha deve ter no mínimo 6 caracteres";
-        return;
-    }
-
     fetch("/login", {
         method: "POST",
         headers: {
