@@ -29,6 +29,7 @@ html {
     margin-bottom: 40px !important;
 }
 .form-login {
+    position: relative;
     max-width: 330px;
     padding: 1rem;
     border: 2px solid black;
@@ -64,4 +65,11 @@ html {
 }
 .main-singin-create-account {
     text-align: center;
+}
+.mensagem-de-erro {
+    display: none;
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    color: var(--bs-red);
 }
