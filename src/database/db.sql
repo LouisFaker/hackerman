@@ -43,7 +43,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'danilo@email.com','$2a$08$xYU3n0rzc/qfBpnFP2gMOOccGcmZtis6FHpYc.5LIaTelzMVyBCpG','Danilo','admin');
+INSERT INTO `usuarios` VALUES (1,'danilo@email.com','123456','Danilo','admin');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import iniciarConexao from "../database/database";
 import { ResultSetHeader } from "mysql2";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 async function indexUser(req: Request, res: Response) {
@@ -24,12 +23,10 @@ async function createUser(req: Request, res: Response) {
                 .json({ message: "Todos os campos são obrigatórios." });
         }
 
-        const encryptedPassword = await bcrypt.hash(senha, 8);
-
         const connection = await iniciarConexao;
         await connection.execute(
             "INSERT INTO usuarios (email, senha, nome, categoria) VALUES (?, ?, ?, ?)",
-            [email, encryptedPassword, nome, categoria]
+            [email, senha, nome, categoria]
         );
 
         res.status(201).json({ message: "usuario criada com sucesso." });
@@ -61,10 +58,8 @@ async function updateUser(req: Request, res: Response) {
 
         const fieldsToUpdate: { [key: string]: unknown } = {};
 
-        const encryptedPassword = await bcrypt.hash(senha, 8);
-
         if (email) fieldsToUpdate.email = email;
-        if (encryptedPassword) fieldsToUpdate.senha = encryptedPassword;
+        if (senha) fieldsToUpdate.senha = senha;
         if (nome) fieldsToUpdate.nome = nome;
         if (categoria) fieldsToUpdate.categoria = categoria;
 
